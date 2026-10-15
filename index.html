@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#08152e">
+
+<title>KINGS Student Smart Portal</title>
+
+<style>
+:root {
+  --navy: #08152e;
+  --blue: #122b50;
+  --gold: #f5bd45;
+  --white: #ffffff;
+  --bg: #f3f6fb;
+  --text: #19263b;
+  --muted: #778399;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+
+button, input, textarea, select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.app {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+  width: 260px;
+  background: var(--navy);
+  color: white;
+  padding: 22px 16px;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 20;
+  transition: transform .25s;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 5px 7px 25px;
+  border-bottom: 1px solid #263653;
+}
+
+.logo {
+  width: 49px;
+  height: 49px;
+  object-fit: contain;
+  background: white;
+  border-radius: 12px;
+  padding: 3px;
+}
+
+.brand h2 {
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.brand small {
+  color: var(--gold);
+  font-size: 11px;
+}
+
+.nav-title {
+  color: #8d9bb3;
+  font-size: 11px;
+  letter-spacing: 2px;
+  margin: 28px 10px 12px;
+}
+
+.nav-btn {
+  width: 100%;
+  padding: 13px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: #c7d1e2;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  text-align: left;
+  margin: 4px 0;
+  transition: .2s;
+}
+
+.nav-btn:hover,
+.nav-btn.active {
+  color: white;
+  background: #1a3153;
+}
+
+.nav-btn.active {
+  border-left: 3px solid var(--gold);
+}
+
+.nav-icon {
+  font-size: 20px;
+  width: 25px;
+  text-align: center;
+}
+
+.sidebar-bottom {
+  margin-top: auto;
+  border-top: 1px solid #263653;
+  padding: 17px 8px 0;
+  color: #aab7ca;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+/* MAIN */
+
+.main {
+  width: calc(100% - 260px);
+  margin-left: 260px;
+  min-height: 100vh;
+}
+
+.topbar {
+  height: 75px;
+  background: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+  border-bottom: 1px solid #e4e9f1;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.top-left {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.topbar h3 {
+  font-size: 17px;
+}
+
+.topbar p {
+  color: var(--muted);
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.menu-btn {
+  display: none;
+  border: 0;
+  background: transparent;
+  font-size: 25px;
+}
+
+.profile-chip {
+  background: #fff5df;
+  color: #805a12;
+  border-radius: 30px;
+  padding: 10px 14px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.content {
+  max-width: 1100px;
+  padding: 28px;
+  margin: auto;
+}
+
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+.welcome {
+  background: linear-gradient(125deg, #0a1b39, #194477);
+  color: white;
+  border-radius: 20px;
+  padding: 30px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.welcome:after {
+  content: "";
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  border: 35px solid rgba(245,189,69,.13);
+  border-radius: 50%;
+  right: -60px;
+  top: -75px;
+}
+
+.welcome .tag {
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.welcome h1 {
+  font-size: clamp(25px, 4vw, 35px);
+  margin: 14px 0 10px;
+}
+
+.welcome p {
+  color: #d0dced;
+  font-size: 14px;
+  line-height: 1.8;
+  max-width: 560px;
+}
+
+.status {
+  display: inline-flex;
+  gap: 7px;
+  align-items: center;
+  margin-top: 19px;
+  background: #ffffff17;
+  padding: 9px 12px;
+  border-radius: 30px;
+  font-size: 12px;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  background: #64e6a1;
+  border-radius: 50%;
+}
+
+/* CARDS */
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 25px 0 15px;
+}
+
+.section-heading h2 {
+  font-size: 19px;
+}
+
+.section-heading p {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 5px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.card {
+  background: white;
+  padding: 21px;
+  border: 1px solid #e6ebf3;
+  border-radius: 15px;
+  transition: transform .2s, box-shadow .2s;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 9px 24px #0c23440c;
+}
+
+.card-icon {
+  width: 45px;
+  height: 45px;
+  background: #fff4d9;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  font-size: 23px;
+  margin-bottom: 15px;
+}
+
+.card h3 {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.card p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.action-btn {
+  background: var(--navy);
+  color: white;
+  padding: 10px 15px;
+  border: 0;
+  border-radius: 9px;
+  margin-top: 16px;
+  font-size: 12px;
+}
+
+.action-btn:hover {
+  background: #1d3d69;
+}
+
+.secondary-btn {
+  background: white;
+  border: 1px solid #dbe2ed;
+  color: var(--navy);
+  padding: 10px 14px;
+  border-radius: 9px;
+  margin-top: 10px;
+}
+
+/* CHAT */
+
+.chat-layout {
+  background: white;
+  border: 1px solid #e5eaf2;
+  border-radius: 17px;
+  overflow: hidden;
+}
+
+.chat-header {
+  background: #fff;
+  border-bottom: 1px solid #e8edf4;
+  padding: 17px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.bot-avatar {
+  width: 43px;
+  height: 43px;
+  display: grid;
+  place-items: center;
+  background: var(--navy);
+  color: var(--gold);
+  font-size: 23px;
+  border-radius: 13px;
+}
+
+.chat-header h3 {
+  font-size: 15px;
+}
+
+.chat-header p {
+  color: #1a9a65;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.chat-body {
+  height: 350px;
+  overflow-y: auto;
+  padding: 20px;
+  background: #f9fbfe;
+}
+
+.message {
+  max-width: 85%;
+  padding: 13px 15px;
+  margin: 12px 0;
+  font-size: 14px;
+  line-height: 1.7;
+  border-radius: 14px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.message.bot {
+  background: white;
+  border: 1px solid #e7ecf4;
+  margin-right: auto;
+  border-bottom-left-radius: 3px;
+}
+
+.message.user {
+  background: var(--navy);
+  color: white;
+  margin-left: auto;
+  border-bottom-right-radius: 3px;
+}
+
+.message small {
+  display: block;
+  opacity: .65;
+  font-size: 10px;
+  margin-top: 7px;
+}
+
+.suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 16px 0;
+  background: white;
+}
+
+.suggestion {
+  background: white;
+  color: #31425d;
+  border: 1px solid #dce4ef;
+  padding: 8px 11px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+.suggestion:hover {
+  background: #fff5df;
+  border-color: var(--gold);
+}
+
+.chat-input-area {
+  padding: 14px 16px 17px;
+  background: white;
+}
+
+.chat-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f5f7fb;
+  border: 1px solid #dce4ef;
+  border-radius: 13px;
+  padding: 7px;
+}
+
+.chat-input-row input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: 0;
+  outline: none;
+  padding: 10px;
+}
+
+.send-btn {
+  background: var(--navy);
+  color: white;
+  border: 0;
+  border-radius: 9px;
+  padding: 12px 15px;
+}
+
+.chat-note {
+  color: var(--muted);
+  font-size: 10px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* FORMS */
+
+.form-card {
+  background: white;
+  padding: 23px;
+  border-radius: 16px;
+  border: 1px solid #e5eaf2;
+  max-width: 650px;
+  margin-bottom: 20px;
+}
+
+.form-card label {
+  display: block;
+  font-size: 13px;
+  font-weight: bold;
+  margin: 16px 0 7px;
+}
+
+.form-card input,
+.form-card select,
+.form-card textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #dce3ee;
+  border-radius: 9px;
+  background: #fbfcff;
+  outline-color: var(--gold);
+}
+
+.form-card textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.notice {
+  background: #fff7e5;
+  border: 1px solid #f4e2b5;
+  color: #795719;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 13px;
+  line-height: 1.7;
+  margin-bottom: 18px;
+}
+
+.footer {
+  text-align: center;
+  padding: 25px 10px;
+  color: #8b96a8;
+  font-size: 11px;
+}
+
+/* MOBILE */
+
+.overlay {
+  display: none;
+}
+
+@media (max-width: 760px) {
+  .sidebar {
+    transform: translateX(-100%);
+    width: 270px;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .overlay.show {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: #0007;
+    z-index: 15;
+  }
+
+  .main {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .topbar {
+    height: 68px;
+    padding: 0 15px;
+  }
+
+  .menu-btn {
+    display: block;
+  }
+
+  .topbar h3 {
+    font-size: 14px;
+  }
+
+  .topbar p {
+    font-size: 10px;
+  }
+
+  .profile-chip {
+    padding: 9px;
+    font-size: 10px;
+  }
+
+  .content {
+    padding: 16px;
+  }
+
+  .welcome {
+    padding: 23px;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .chat-body {
+    height: 48vh;
+    min-height: 270px;
+  }
+
+  .message {
+    max-width: 92%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <aside class="sidebar" id="sidebar">
+
+    <div class="brand">
+      <img
+        src="public/kings-logo.jpg"
+        class="logo"
+        alt="Kings College Logo"
+        onerror="this.style.display='none'"
+      >
+
+      <div>
+        <h2>KINGS STUDENT</h2>
+        <small>SMART PORTAL</small>
+      </div>
+    </div>
+
+    <p class="nav-title">MAIN MENU</p>
+
+    <button class="nav-btn active" data-page="chat">
+      <span class="nav-icon">🤖</span>
+      <span>Chat Assistant</span>
+    </button>
+
+    <button class="nav-btn" data-page="library">
+      <span class="nav-icon">📚</span>
+      <span>Library</span>
+    </button>
+
+    <button class="nav-btn" data-page="transport">
+      <span class="nav-icon">🚌</span>
+      <span>Transport</span>
+    </button>
+
+    <button class="nav-btn" data-page="profile">
+      <span class="nav-icon">👤</span>
+      <span>Profile</span>
+    </button>
+
+    <button class="nav-btn" data-page="settings">
+      <span class="nav-icon">⚙️</span>
+      <span>Settings</span>
+    </button>
+
+    <button class="nav-btn" data-page="about">
+      <span class="nav-icon">🏫</span>
+      <span>About</span>
+    </button>
+
+    <div class="sidebar-bottom">
+      <strong>KINGS COLLEGE OF ENGINEERING</strong>
+      <br>
+      Student Digital Experience
+      <br>
+      © 2026 KINGS Portal
+    </div>
+
+  </aside>
+
+  <div class="overlay" id="overlay"></div>
+
+  <main class="main">
+
+    <header class="topbar">
+
+      <div class="top-left">
+        <button class="menu-btn" id="menuBtn">☰</button>
+
+        <div>
+          <h3 id="pageTitle">TETRON KCE Assistant</h3>
+          <p id="pageSubtitle">Your smart college companion</p>
+        </div>
+      </div>
+
+      <div class="profile-chip" id="topProfile">
+        👤 Student
+      </div>
+
+    </header>
+
+    <div class="content">
+
+      <!-- CHAT PAGE -->
+
+      <section class="page active" id="chat">
+
+        <div class="welcome">
+          <span class="tag">KINGS DIGITAL CAMPUS</span>
+
+          <h1>Your College.<br>Your Smart Assistant.</h1>
+
+          <p>
+            Welcome to your digital campus. Get help with college
+            information, library, transport and student services.
+          </p>
+
+          <div class="status">
+            <span class="dot"></span>
+            Portal interface ready
+          </div>
+        </div>
+
+        <div class="section-heading">
+          <div>
+            <h2>Ask TETRON KCE Assistant</h2>
+            <p>Your student support chat</p>
+          </div>
+
+          <button class="secondary-btn" id="clearChat">
+            Clear chat
+          </button>
+        </div>
+
+        <div class="chat-layout">
+
+          <div class="chat-header">
+            <div class="bot-avatar">✦</div>
+
+            <div>
+              <h3>TETRON KCE Assistant</h3>
+              <p>● Demo mode</p>
+            </div>
+          </div>
+
+          <div class="chat-body" id="chatBody">
+            <div class="message bot">
+              Vanakkam! 👋 Welcome to KINGS Student Smart Portal.
+
+              I'm TETRON KCE Assistant. I can help you explore the
+              Library, Transport, Profile and other portal sections.
+
+              Choose a question below or type your message!
+            </div>
+          </div>
+
+          <div class="suggestions">
+            <button class="suggestion" data-question="Tell me about the library">
+              📚 Library details
+            </button>
+
+            <button class="suggestion" data-question="Tell me about transport">
+              🚌 Transport details
+            </button>
+
+            <button class="suggestion" data-question="How can I update my profile?">
+              👤 My profile
+            </button>
+
+            <button class="suggestion" data-question="Tell me about this portal">
+              🏫 About portal
+            </button>
+          </div>
+
+          <div class="chat-input-area">
+
+            <form class="chat-input-row" id="chatForm">
+              <input
+                id="chatInput"
+                type="text"
+                placeholder="Ask something about your college..."
+                autocomplete="off"
+                required
+              >
+
+              <button class="send-btn" type="submit">
+                Send ➤
+              </button>
+            </form>
+
+            <p class="chat-note">
+              Demo assistant — answers use sample information.
+              Connect an AI backend for real AI responses.
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="section-heading">
+          <div>
+            <h2>Student Services</h2>
+            <p>Explore the portal features</p>
+          </div>
+        </div>
+
+        <div class="cards">
+
+          <div class="card">
+            <div class="card-icon">📚</div>
+            <h3>Digital Library</h3>
+            <p>Explore library services and available resources.</p>
+            <button class="action-btn" data-goto="library">
+              Open Library →
+            </button>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">🚌</div>
+            <h3>Campus Transport</h3>
+            <p>View transport information and route enquiries.</p>
+            <button class="action-btn" data-goto="transport">
+              Open Transport →
+            </button>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">👤</div>
+            <h3>Student Profile</h3>
+            <p>Manage your personal portal display information.</p>
+            <button class="action-btn" data-goto="profile">
+              My Profile →
+            </button>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">⚙️</div>
+            <h3>Preferences</h3>
+            <p>Customize your portal settings and experience.</p>
+            <button class="action-btn" data-goto="settings">
+              Settings →
+            </button>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- LIBRARY PAGE -->
+
+      <section class="page" id="library">
+
+        <div class="welcome">
+          <span class="tag">LEARN • EXPLORE • GROW</span>
+          <h1>Digital Library 📚</h1>
+          <p>
+            Your library portal for discovering books,
+            academic resources and library services.
+          </p>
+        </div>
+
+        <div class="notice">
+          <strong>Note:</strong> This is a frontend prototype.
+          Actual book availability, student login and borrowing
+          records require authorized college library system access.
+        </div>
+
+        <div class="cards">
+
+          <div class="card">
+            <div class="card-icon">📖</div>
+            <h3>Book Catalogue</h3>
+            <p>Connect an authorized catalogue to search books by title, author or subject.</p>
+            <button class="action-btn" data-question="How do I search for books in the library?">
+              Ask Assistant
+            </button>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">💻</div>
+            <h3>Digital Resources</h3>
+            <p>Provide approved links to e-books, journals and learning materials.</p>
+            <button class="action-btn" data-question="What are digital library resources?">
+              Learn More
+            </button>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">🕒</div>
+            <h3>Library Timings</h3>
+            <p>Official opening and closing hours can be added here after verification.</p>
+            <button class="action-btn" data-question="How can I find official library timings?">
+              Ask Assistant
+            </button>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">🪪</div>
+            <h3>My Borrowings</h3>
+            <p>Borrowing status requires an authenticated connection to the college library system.</p>
+            <button class="action-btn" data-question="How can I check my borrowed books?">
+              Ask Assistant
+            </button>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- TRANSPORT PAGE -->
+
+      <section class="page" id="transport">
+
+        <div class="welcome">
+          <span class="tag">YOUR CAMPUS JOURNEY</span>
+          <h1>Transport Services 🚌</h1>
+          <p>
+            A dedicated space for college bus routes,
+            pickup points and transport enquiries.
+          </p>
+        </div>
+
+        <div class="notice">
+          Official bus numbers, routes, pickup times and
+          availability must be confirmed with the college transport office.
+          No live route data is connected in this prototype.
+        </div>
+
+        <div class="cards">
+
+          <div class="card">
+            <div class="card-icon">📍</div>
+            <h3>Bus Routes</h3>
+            <p>Official route lists can be displayed here when verified data is available.</p>
+            <button class="action-btn" data-question="How can I find my college bus route?">
+              Route Enquiry
+            </button>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">⏰</div>
+            <h3>Pickup Timings</h3>
+            <p>Publish verified pickup and departure times from the transport office.</p>
+            <button class="action-btn" data-question="How can I confirm college bus timings?">
+              Timing Enquiry
+            </button>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">☎️</div>
+            <h3>Transport Support</h3>
+            <p>Add official contact information for transport-related questions.</p>
+            <button class="action-btn" data-question="How do I contact college transport support?">
+              Get Guidance
+            </button>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">📝</div>
+            <h3>Transport Enquiry</h3>
+            <p>Use the assistant to prepare questions about bus facilities and routes.</p>
+            <button class="action-btn" data-question="Help me prepare a transport enquiry">
+              Ask Assistant
+            </button>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- PROFILE PAGE -->
+
+      <section class="page" id="profile">
+
+        <div class="welcome">
+          <span class="tag">STUDENT ACCOUNT</span>
+          <h1>My Profile 👤</h1>
+          <p>Personalize your portal display information.</p>
+        </div>
+
+        <div class="form-card">
+
+          <h3>Student Information</h3>
+
+          <form id="profileForm">
+
+            <label for="studentName">Display Name</label>
+            <input id="studentName" placeholder="Enter your name">
+
+            <label for="studentDept">Department</label>
+            <input id="studentDept" placeholder="e.g. Computer Science">
+
+            <label for="studentYear">Year of Study</label>
+            <select id="studentYear">
+              <option value="">Select year</option>
+              <option>First Year</option>
+              <option>Second Year</option>
+              <option>Third Year</option>
+              <option>Final Year</option>
+            </select>
+
+            <button class="action-btn" type="submit">
+              Save Profile
+            </button>
+
+          </form>
+
+          <p style="font-size:12px;color:#778399;margin-top:15px">
+            Prototype note: profile details are saved in this browser
+            on this device. This is not a secure college login system.
+          </p>
+
+        </div>
+
+      </section>
+
+      <!-- SETTINGS PAGE -->
+
+      <section class="page" id="settings">
+
+        <div class="welcome">
+          <span class="tag">YOUR EXPERIENCE</span>
+          <h1>Portal Settings ⚙️</h1>
+          <p>Manage your local preferences.</p>
+        </div>
+
+        <div class="form-card">
+
+          <h3>Preferences</h3>
+
+          <label for="themeSelect">Appearance</label>
+          <select id="themeSelect">
+            <option value="light">Light Mode</option>
+            <option value="dark">Dark Mode</option>
+          </select>
+
+          <label for="fontSelect">Text Size</label>
+          <select id="fontSelect">
+            <option value="normal">Normal</option>
+            <option value="large">Large</option>
+          </select>
+
+          <button class="action-btn" id="saveSettings">
+            Save Settings
+          </button>
+
+          <br>
+
+          <button class="secondary-btn" id="resetSettings">
+            Reset Settings
+          </button>
+
+        </div>
+
+      </section>
+
+      <!-- ABOUT PAGE -->
+
+      <section class="page" id="about">
+
+        <div class="welcome">
+          <span class="tag">BUILT FOR STUDENTS</span>
+          <h1>About the Portal 🏫</h1>
+          <p>
+            KINGS Student Smart Portal brings student services
+            together in one modern, mobile-friendly interface.
+          </p>
+        </div>
+
+        <div class="cards">
+
+          <div class="card">
+            <div class="card-icon">🎯</div>
+            <h3>Our Purpose</h3>
+            <p>
+              Provide a single digital interface for student
+              support and campus information.
+            </p>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">🤖</div>
+            <h3>TETRON KCE Assistant</h3>
+            <p>
+              A chatbot interface designed to help students
+              navigate college-related information.
+            </p>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">📱</div>
+            <h3>Mobile Friendly</h3>
+            <p>
+              Designed to work across mobile phones, tablets
+              and desktop browsers.
+            </p>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">🔐</div>
+            <h3>Privacy</h3>
+            <p>
+              This prototype stores basic preferences locally.
+              Secure accounts and college integrations are not connected.
+            </p>
+          </div>
+
+        </div>
+
+      </section>
+
+      <footer class="footer">
+        KINGS Student Smart Portal · Frontend Prototype · 2026
+      </footer>
+
+    </div>
+
+  </main>
+
+</div>
+
+<script>
+const titles = {
+  chat: ["TETRON KCE Assistant", "Your smart college companion"],
+  library: ["Digital Library", "Academic resources and library services"],
+  transport: ["Transport Services", "College travel information"],
+  profile: ["My Profile", "Manage your display information"],
+  settings: ["Settings", "Customize your portal"],
+  about: ["About", "KINGS Student Smart Portal"]
+};
+
+const sidebar = document.getElementById("sidebar");
+const overlay = document.getElementById("overlay");
+const chatBody = document.getElementById("chatBody");
+const chatInput = document.getElementById("chatInput");
+
+function navigate(page) {
+  if (!document.getElementById(page)) return;
+
+  document.querySelectorAll(".page").forEach(section => {
+    section.classList.toggle("active", section.id === page);
+  });
+
+  document.querySelectorAll(".nav-btn").forEach(button => {
+    button.classList.toggle("active", button.dataset.page === page);
+  });
+
+  document.getElementById("pageTitle").textContent = titles[page][0];
+  document.getElementById("pageSubtitle").textContent = titles[page][1];
+
+  sidebar.classList.remove("open");
+  overlay.classList.remove("show");
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+document.querySelectorAll(".nav-btn").forEach(button => {
+  button.addEventListener("click", () => navigate(button.dataset.page));
+});
+
+document.querySelectorAll("[data-goto]").forEach(button => {
+  button.addEventListener("click", () => navigate(button.dataset.goto));
+});
+
+document.getElementById("menuBtn").addEventListener("click", () => {
+  sidebar.classList.toggle("open");
+  overlay.classList.toggle("show");
+});
+
+overlay.addEventListener("click", () => {
+  sidebar.classList.remove("open");
+  overlay.classList.remove("show");
+});
+
+// PROFILE
+
+function loadProfile() {
+  const profile = JSON.parse(localStorage.getItem("kingsProfile") || "{}");
+
+  document.getElementById("studentName").value = profile.name || "";
+  document.getElementById("studentDept").value = profile.department || "";
+  document.getElementById("studentYear").value = profile.year || "";
+
+  document.getElementById("topProfile").textContent =
+    "👤 " + (profile.name || "Student");
+}
+
+document.getElementById("profileForm").addEventListener("submit", event => {
+  event.preventDefault();
+
+  const profile = {
+    name: document.getElementById("studentName").value.trim(),
+    department: document.getElementById("studentDept").value.trim(),
+    year: document.getElementById("studentYear").value
+  };
+
+  localStorage.setItem("kingsProfile", JSON.stringify(profile));
+  loadProfile();
+
+  alert("Profile saved on this device!");
+});
+
+// CHAT
+
+function addMessage(text, sender) {
+  const message = document.createElement("div");
+  message.className = "message " + sender;
+
+  const content = document.createElement("div");
+  content.textContent = text;
+  message.appendChild(content);
+
+  const time = document.createElement("small");
+  time.textContent = new Date().toLocaleTimeString([], {
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+
+  message.appendChild(time);
+  chatBody.appendChild(message);
+  chatBody.scrollTop = chatBody.scrollHeight;
+}
+
+function getDemoReply(question) {
+  const q = question.toLowerCase();
+
+  if (q.includes("library") || q.includes("book") ||
+      q.includes("borrow") || q.includes("journal")) {
+    return "📚 Library Services\n\n" +
+      "This portal can support book catalogue searches, " +
+      "digital resources and borrowing information.\n\n" +
+      "Official book availability and opening hours are not connected yet. " +
+      "Please verify those details with the college library.";
+  }
+
+  if (q.includes("transport") || q.includes("bus") ||
+      q.includes("route") || q.includes("pickup") ||
+      q.includes("timing")) {
+    return "🚌 Transport Services\n\n" +
+      "You can use the Transport section to plan your enquiry.\n\n" +
+      "Verified bus routes, pickup timings and transport contacts " +
+      "need to be added from official college information.";
+  }
+
+  if (q.includes("profile") || q.includes("name") ||
+      q.includes("department")) {
+    return "👤 Student Profile\n\n" +
+      "Open Profile from the sidebar. Enter your display name, " +
+      "department and year, then tap Save Profile.\n\n" +
+      "These details are stored locally in this browser.";
+  }
+
+  if (q.includes("setting") || q.includes("theme") ||
+      q.includes("appearance")) {
+    return "⚙️ Settings\n\n" +
+      "Open Settings to change the appearance and text size. " +
+      "Save your preferences to apply them.";
+  }
+
+  if (q.includes("about") || q.includes("portal") ||
+      q.includes("tetron") || q.includes("kings")) {
+    return "🏫 KINGS Student Smart Portal\n\n" +
+      "TETRON KCE Assistant is the chatbot interface in this " +
+      "student portal prototype.\n\n" +
+      "The frontend is ready for future integration with a real AI API, " +
+      "verified college information and secure student services.";
+  }
+
+  if (q.includes("hello") || q.includes("hi") ||
+      q.includes("vanakkam")) {
+    return "Vanakkam! 👋 Welcome to KINGS Student Smart Portal.\n\n" +
+      "Ask me about Library, Transport, Profile or Settings.";
+  }
+
+  return "Thanks for your question! 😊\n\n" +
+    "I'm currently running in demo mode, so I can answer basic " +
+    "questions about this portal only.\n\n" +
+    "For real AI-powered answers, we need to connect the chatbot " +
+    "to a backend API.";
+}
+
+function sendMessage(question) {
+  const text = question.trim();
+  if (!text) return;
+
+  addMessage(text, "user");
+  chatInput.value = "";
+
+  const typing = document.createElement("div");
+  typing.className = "message bot";
+  typing.textContent = "TETRON is thinking...";
+  chatBody.appendChild(typing);
+
+  chatBody.scrollTop = chatBody.scrollHeight;
+
+  setTimeout(() => {
+    typing.remove();
+    addMessage(getDemoReply(text), "bot");
+  }, 450);
+}
+
+document.getElementById("chatForm").addEventListener("submit", event => {
+  event.preventDefault();
+  sendMessage(chatInput.value);
+});
+
+document.querySelectorAll("[data-question]").forEach(button => {
+  button.addEventListener("click", () => {
+    const question = button.dataset.question;
+    navigate("chat");
+    sendMessage(question);
+  });
+});
+
+document.getElementById("clearChat").addEventListener("click", () => {
+  chatBody.innerHTML = "";
+  addMessage(
+    "Vanakkam! 👋 I'm TETRON KCE Assistant. How can I help you?",
+    "bot"
+  );
+});
+
+// SETTINGS
+
+function applySettings() {
+  const settings = JSON.parse(localStorage.getItem("kingsSettings") || "{}");
+
+  document.getElementById("themeSelect").value = settings.theme || "light";
+  document.getElementById("fontSelect").value = settings.font || "normal";
+
+  document.body.style.background =
+    settings.theme === "dark" ? "#101827" : "var(--bg)";
+
+  document.body.style.color =
+    settings.theme === "dark" ? "#f1f5f9" : "var(--text)";
+
+  document.body.style.fontSize =
+    settings.font === "large" ? "18px" : "14px";
+}
+
+document.getElementById("saveSettings").addEventListener("click", () => {
+  const settings = {
+    theme: document.getElementById("themeSelect").value,
+    font: document.getElementById("fontSelect").value
+  };
+
+  localStorage.setItem("kingsSettings", JSON.stringify(settings));
+  applySettings();
+  alert("Settings saved!");
+});
+
+document.getElementById("resetSettings").addEventListener("click", () => {
+  localStorage.removeItem("kingsSettings");
+  applySettings();
+  alert("Settings reset!");
+});
+
+// INITIALIZE
+
+loadProfile();
+applySettings();
+</script>
+
+</body>
+</html>
