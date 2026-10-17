@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101c36">
+<title>KINGS Student Smart Portal</title>
+
+<style>
+:root {
+ --navy:#101c36;
+ --navy2:#1c3154;
+ --gold:#f3c85b;
+ --white:#fff;
+ --bg:#f3f5f9;
+ --muted:#788196;
+ --border:#e3e8f0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,Arial,sans-serif;background:var(--bg);color:#17233d}
+button,input{font:inherit}
+button{cursor:pointer}
+.app{display:flex;min-height:100vh}
+.sidebar{
+ width:250px;flex-shrink:0;background:var(--navy);color:white;
+ padding:22px 15px;display:flex;flex-direction:column;
+}
+.brand{display:flex;align-items:center;gap:12px;padding:5px 8px 25px;border-bottom:1px solid #ffffff20}
+.brand-logo{
+ width:45px;height:45px;border-radius:14px;background:var(--gold);
+ color:var(--navy);display:grid;place-items:center;font-size:22px;font-weight:900
+}
+.brand h2{font-size:15px}.brand p{font-size:10px;color:#aebbd1;margin-top:4px}
+.nav-label{font-size:10px;letter-spacing:2px;color:#8799b7;margin:25px 10px 10px}
+.nav-item{
+ width:100%;display:flex;align-items:center;gap:12px;padding:12px 13px;
+ border:0;border-radius:10px;background:transparent;color:#c7d0e0;
+ margin-bottom:5px;text-align:left;font-size:13px;transition:.2s
+}
+.nav-item:hover,.nav-item.active{background:#ffffff12;color:white}
+.nav-item.active{border-left:3px solid var(--gold)}
+.nav-icon{width:23px;text-align:center;font-size:18px}
+.sidebar-bottom{margin-top:auto;border-top:1px solid #ffffff20;padding:17px 9px 0;font-size:11px;color:#9caac2;line-height:1.8}
+.main{flex:1;min-width:0}
+.topbar{
+ height:70px;background:white;border-bottom:1px solid var(--border);
+ display:flex;align-items:center;justify-content:space-between;padding:0 27px
+}
+.top-left{display:flex;align-items:center;gap:12px}
+.menu-btn{display:none;border:0;background:none;font-size:25px}
+.breadcrumb{font-size:12px;color:var(--muted)}.breadcrumb strong{color:var(--navy)}
+.top-profile{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:750}
+.avatar{width:36px;height:36px;border-radius:50%;background:#fff0bd;color:#775819;display:grid;place-items:center}
+.content{max-width:1450px;margin:auto;padding:25px}
+.hero{
+ min-height:280px;border-radius:22px;padding:35px;display:flex;align-items:center;
+ color:white;position:relative;overflow:hidden;
+ background:linear-gradient(90deg,#101c36f5 0%,#101c36c9 52%,#101c3640 100%),
+ url("public/college-background.png") center/cover;
+ box-shadow:0 15px 35px #101c361b
+}
+.hero-content{max-width:600px}
+.eyebrow{color:var(--gold);font-size:10px;font-weight:850;letter-spacing:2px;margin-bottom:13px}
+.hero h1{font-size:clamp(28px,4vw,43px);line-height:1.15;margin-bottom:14px}
+.hero h1 span{color:var(--gold)}
+.hero p{font-size:13px;line-height:1.8;color:#e0e7f3;max-width:500px}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.btn{border:0;border-radius:9px;padding:11px 15px;font-size:12px;font-weight:800}
+.btn-gold{background:var(--gold);color:var(--navy)}
+.btn-outline{background:#ffffff15;color:white;border:1px solid #ffffff70}
+.section-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:27px 0 15px}
+.section-heading h2{font-size:19px}.section-heading p{font-size:12px;color:var(--muted);margin-top:5px}
+.status{font-size:10px;font-weight:800;color:#168252;background:#def7e9;border-radius:20px;padding:8px 11px}
+
+/* NEW COMPACT SERVICE CARDS */
+.cards{
+ display:grid;
+ grid-template-columns:repeat(3,minmax(0,1fr));
+ gap:14px;
+}
+.card{
+ background:white;border:1px solid var(--border);border-radius:16px;
+ padding:17px;display:flex;align-items:center;gap:13px;
+ box-shadow:0 5px 16px #14203b08;transition:transform.2s,box-shadow.2s;
+ min-width:0;
+}
+.card:hover{transform:translateY(-3px);box-shadow:0 12px 25px #14203b12}
+.card-icon{
+ width:48px;height:48px;flex-shrink:0;border-radius:14px;
+ display:grid;place-items:center;background:#fff3cf;font-size:23px;
+}
+.card:nth-child(1).card-icon{background:#e9edff}
+.card:nth-child(2).card-icon{background:#fff1c8}
+.card:nth-child(3).card-icon{background:#dcf6e8}
+.card-body{flex:1;min-width:0}
+.card h3{font-size:13px;margin-bottom:5px;color:var(--navy)}
+.card p{font-size:11px;color:var(--muted);line-height:1.5}
+.card button{
+ flex-shrink:0;width:32px;height:32px;border:0;border-radius:10px;
+ background:var(--navy);color:var(--gold);font-size:17px
+}
+.page{display:none}.page.active{display:block}
+.panel{background:white;border:1px solid var(--border);border-radius:17px;padding:23px;margin-top:20px}
+.panel h2{font-size:19px;margin-bottom:9px}
+.panel>p{font-size:12px;color:var(--muted);line-height:1.8}
+.form-field{margin-top:16px}
+.form-field label{display:block;font-size:12px;font-weight:750;margin-bottom:7px}
+.form-field input,.chat-input{
+ width:100%;padding:12px;border:1px solid #dce2ed;border-radius:10px;outline:none;background:white
+}
+.form-field input:focus,.chat-input:focus{border-color:#526fa8}
+.chat-box{display:flex;flex-direction:column;height:55vh;min-height:300px;margin-top:15px}
+.chat-messages{flex:1;overflow-y:auto;background:#f7f8fc;border-radius:12px;padding:14px}
+.message{max-width:88%;padding:11px 13px;border-radius:12px;font-size:12px;line-height:1.7;margin-bottom:11px;white-space:pre-wrap;overflow-wrap:anywhere}
+.message.bot{background:white;border:1px solid var(--border);margin-right:auto}
+.message.user{background:var(--navy);color:white;margin-left:auto}
+.chat-form{display:flex;gap:9px;margin-top:12px}
+.chat-form input{flex:1;min-width:0}
+.chat-form button{background:var(--navy);color:white;border:0;border-radius:10px;padding:0 16px;font-weight:800}
+.note{font-size:11px;color:var(--muted);line-height:1.7;margin-top:10px}
+.info-list{display:grid;gap:10px;margin-top:17px}
+.info-row{display:flex;align-items:flex-start;gap:12px;padding:14px;border:1px solid var(--border);border-radius:12px}
+.info-row>span{font-size:21px}
+.info-row p{font-size:12px;color:var(--muted);line-height:1.6;margin-top:4px}
+.footer{text-align:center;color:#8993a6;font-size:10px;padding:28px 8px}
+.overlay{display:none}
+@media(max-width:950px){
+.sidebar{width:220px}.cards{grid-template-columns:repeat(2,minmax(0,1fr))}
+.content{padding:19px}
+}
+@media(max-width:650px){
+.sidebar{position:fixed;inset:0 auto 0 0;width:270px;transform:translateX(-105%);transition:transform.25s;z-index:20}
+.sidebar.open{transform:translateX(0)}
+.overlay.show{display:block;position:fixed;inset:0;background:#07112488;z-index:19}
+.menu-btn{display:block}
+.topbar{height:62px;padding:0 13px}
+.top-profile.user-name{display:none}
+.content{padding:13px}
+.hero{min-height:280px;padding:23px;background-position:center}
+.hero p{font-size:12px}
+.cards{grid-template-columns:1fr;gap:10px}
+.card{padding:14px;border-radius:14px}
+.card-icon{width:44px;height:44px}
+.section-heading h2{font-size:17px}
+.panel{padding:16px}
+}
+</style>
+
+<!-- TETRON_LOGO_VISIBILITY_FIX -->
+<style>
+.brand-logo img,
+.card-icon img {
+ display: block!important;
+ visibility: visible!important;
+ opacity: 1!important;
+ width: 100%!important;
+ height: 100%!important;
+ max-width: 100%!important;
+ max-height: 100%!important;
+ object-fit: contain!important;
+}
+.brand-logo {
+ overflow: hidden;
+ min-width: 48px;
+ min-height: 48px;
+}
+.cards.card-icon {
+ overflow: hidden;
+ min-width: 48px;
+ min-height: 48px;
+}
+</style>
+
+<style>
+
+/* KCE_HERO_ALIGNMENT_FIX */
+.hero-title {
+ max-width: 100%;
+ line-height: 1.18;
+ overflow-wrap: normal;
+ word-break: normal;
+ margin-bottom: 22px;
+}
+.hero-title span {
+ display: inline-block;
+ max-width: 100%;
+}
+@media (max-width: 480px) {
+.hero-title {
+ font-size: clamp(27px, 7vw, 36px);
+ line-height: 1.2;
+ }
+.hero-title span {
+ font-size: 0.92em;
+ }
+}
+
+</style>
+<style>
+
+/* KCE_PROFESSIONAL_HERO */
+.hero-title {
+ font-size: clamp(32px, 6vw, 48px);
+ line-height: 1.16;
+ font-weight: 800;
+ letter-spacing: -1px;
+ max-width: 560px;
+ margin: 18px 0 12px;
+ overflow-wrap: break-word;
+}
+.hero-subtitle {
+ font-size: clamp(16px, 3.8vw, 20px);
+ line-height: 1.6;
+ margin: 0 0 24px;
+ color: inherit;
+ opacity:.92;
+}
+@media (max-width: 480px) {
+.hero-title {
+ font-size: 34px;
+ letter-spacing: -.7px;
+ line-height: 1.18;
+ }
+}
+
+</style>
+<style>
+
+/* KCE_FINAL_LOGO_TUNING */
+.brand-logo {
+ display: flex!important;
+ align-items: center!important;
+ justify-content: center!important;
+ flex-shrink: 0!important;
+ overflow: hidden!important;
+ padding: 3px!important;
+ box-sizing: border-box!important;
+}
+.brand-logo img {
+ display: block!important;
+ width: 100%!important;
+ height: 100%!important;
+ object-fit: contain!important;
+ object-position: center!important;
+ margin: 0!important;
+}
+.cards.card:nth-child(1).card-icon,
+.cards.card:nth-child(2).card-icon {
+ display: flex!important;
+ align-items: center!important;
+ justify-content: center!important;
+ flex-shrink: 0!important;
+ overflow: hidden!important;
+ padding: 4px!important;
+ box-sizing: border-box!important;
+}
+.cards.card:nth-child(1).card-icon img {
+ width: 116%!important;
+ height: 116%!important;
+ max-width: none!important;
+ max-height: none!important;
+ object-fit: contain!important;
+ object-position: center!important;
+ display: block!important;
+ margin: 0!important;
+}
+.cards.card:nth-child(2).card-icon img {
+ width: 100%!important;
+ height: 100%!important;
+ max-width: 100%!important;
+ max-height: 100%!important;
+ object-fit: contain!important;
+ object-position: center!important;
+ display: block!important;
+ margin: 0!important;
+}
+
+</style>
+<style>
+
+/* ===== FINAL KCE PORTAL LOGO FIX ===== */
+.brand-logo {
+ width: 44px!important;
+ height: 44px!important;
+ min-width: 44px!important;
+ min-height: 44px!important;
+ display: flex!important;
+ align-items: center!important;
+ justify-content: center!important;
+ flex-shrink: 0!important;
+ overflow: hidden!important;
+ border-radius: 12px!important;
+ background: #fff!important;
+ padding: 3px!important;
+ box-sizing: border-box!important;
+}
+.brand-logo img {
+ display: block!important;
+ width: 100%!important;
+ height: 100%!important;
+ max-width: 100%!important;
+ max-height: 100%!important;
+ object-fit: contain!important;
+ object-position: center!important;
+}
+.card-icon {
+ width: 48px!important;
+ height: 48px!important;
+ min-width: 48px!important;
+ min-height: 48px!important;
+ display: flex!important;
+ align-items: center!important;
+ justify-content: center!important;
+ overflow: hidden!important;
+ border-radius: 12px!important;
+ padding: 4px!important;
+ box-sizing: border-box!important;
+}
+.card-icon img {
+ display: block!important;
+ width: 100%!important;
+ height: 100%!important;
+ max-width: 100%!important;
+ max-height: 100%!important;
+ object-fit: contain!important;
+ object-position: center!important;
+}
+.cards.card:nth-child(1).card-icon img,
+.cards.card:nth-child(2).card-icon img {
+ transform: none!important;
+}
+.nav-icon {
+ display: inline-flex!important;
+ width: 22px!important;
+ min-width: 22px!important;
+ align-items: center!important;
+ justify-content: center!important;
+}
+
+</style>
+<style>
+
+/* TETRON AND LIBRARY LOGO FINAL FIX */
+.cards.card:nth-child(1).card-icon,
+.cards.card:nth-child(2).card-icon {
+ width: 58px!important;
+ height: 58px!important;
+ min-width: 58px!important;
+ min-height: 58px!important;
+ padding: 3px!important;
+ display: flex!important;
+ align-items: center!important;
+ justify-content: center!important;
+ overflow: hidden!important;
+ flex-shrink: 0!important;
+}
+.cards.card:nth-child(1).card-icon img {
+ width: 100%!important;
+ height: 100%!important;
+ object-fit: contain!important;
+ object-position: center!important;
+ padding: 0!important;
+ transform: none!important;
+}
+.cards.card:nth-child(2).card-icon img {
+ width: 100%!important;
+ height: 100%!important;
+ object-fit: cover!important;
+ object-position: center!important;
+ padding: 0!important;
+ transform: none!important;
+}
+
+</style>
+<style>
+
+/* ===== MOBILE LAYOUT + LOGO FINAL REPAIR ===== */
+html {
+ width: 100%;
+ max-width: 100%;
+ overflow-x: hidden!important;
+}
+body {
+ width: 100%;
+ max-width: 100%;
+ overflow-x: hidden!important;
+}
+img {
+ max-width: 100%;
+}
+@media (max-width: 600px) {
+.main, main,.content,.page-content,.workspace {
+ min-width: 0!important;
+ width: 100%!important;
+ max-width: 100%!important;
+ box-sizing: border-box!important;
+ }
+.cards {
+ grid-template-columns: minmax(0, 1fr)!important;
+ width: 100%!important;
+ gap: 12px!important;
+ }
+.card {
+ min-width: 0!important;
+ max-width: 100%!important;
+ box-sizing: border-box!important;
+ }
+.panel,.hero,.hero-card,.section,.page {
+ max-width: 100%!important;
+ box-sizing: border-box!important;
+ }
+.cards.card:nth-child(1).card-icon,
+.cards.card:nth-child(2).card-icon {
+ width: 56px!important;
+ height: 56px!important;
+ min-width: 56px!important;
+ min-height: 56px!important;
+ flex-shrink: 0!important;
+ }
+.cards.card:nth-child(1).card-icon img,
+.cards.card:nth-child(2).card-icon img {
+ width: 100%!important;
+ height: 100%!important;
+ object-fit: contain!important;
+ object-position: center!important;
+ }
+}
+
+</style>
+
+<style id="KCE_AUTH_UI_V1">
+body:not(.portal-authenticated) .app { display:none !important; }
+#kceAuthScreen {
+  position:fixed; inset:0; z-index:99999; display:flex;
+  align-items:center; justify-content:center; padding:22px;
+  background:linear-gradient(145deg,#07162f,#122b50 60%,#b38b36);
+  font-family:Arial,sans-serif;color:#14213d;
+}
+#kceAuthCard {
+  width:min(100%,410px); background:#fff; padding:28px;
+  border-radius:22px; box-shadow:0 20px 65px #0005;
+}
+#kceAuthCard h2 {margin:0 0 7px;color:#10264a}
+#kceAuthCard .sub {color:#68758a;margin:0 0 22px}
+#kceAuthCard label {display:block;font-size:14px;font-weight:bold;margin:13px 0 6px}
+#kceAuthCard input,#kceAuthCard select {
+  width:100%;box-sizing:border-box;padding:13px;border:1px solid #d5dce7;
+  border-radius:10px;font-size:16px;background:#fff
+}
+#kceAuthCard button {
+  width:100%;border:0;border-radius:10px;padding:13px;margin-top:16px;
+  background:#b38b36;color:#fff;font-size:16px;font-weight:bold
+}
+#kceAuthMessage {margin-top:12px;color:#b42318;font-size:14px;white-space:pre-wrap}
+#kceAdminPanel {position:fixed;z-index:9999;right:12px;top:12px;background:white;
+  border:1px solid #d8c18c;border-radius:12px;padding:10px;box-shadow:0 4px 18px #0002}
+#kceAdminPanel button {border:0;border-radius:8px;padding:9px;background:#10264a;color:white}
+#kceStudentPanel {display:none;position:fixed;inset:0;z-index:99998;overflow:auto;
+  background:#f5f7fb;padding:22px}
+#kceStudentPanel .inner {max-width:620px;margin:25px auto;background:white;padding:22px;border-radius:16px}
+#kceStudentPanel input {width:100%;box-sizing:border-box;padding:12px;margin:6px 0 12px}
+#kceStudentPanel button {padding:10px 14px;margin:4px;border:0;border-radius:8px;background:#10264a;color:white}
+</style>
+
+</head>
+<body>
+<div class="app">
+<aside class="sidebar" id="sidebar">
+ <div class="brand">
+ <div class="brand-logo"><img src="public/kings-logo.jpg" alt="KINGS College Logo"></div>
+ <div><h2>KINGS PORTAL</h2><p>STUDENT SMART PORTAL</p></div>
+ </div>
+ <div class="nav-label">MAIN MENU</div>
+ <button class="nav-item active" data-page="home"><span class="nav-icon">⌂</span> Dashboard</button>
+ <button class="nav-item" data-page="chat"><span class="nav-icon">✦</span> TETRON Assistant</button>
+ <button class="nav-item" data-page="library"><span class="nav-icon">📚</span> Library</button>
+ <button class="nav-item" data-page="transport"><span class="nav-icon">🚌</span> Transport</button>
+ <button class="nav-item" data-page="dhi"><span class="nav-icon">🎓</span> DHI Dashboard</button>
+ <div class="nav-label">PERSONAL</div>
+ <button class="nav-item" data-page="profile"><span class="nav-icon">♙</span> Profile</button>
+ <button class="nav-item" data-page="settings"><span class="nav-icon">⚙</span> Settings</button>
+ <button class="nav-item" data-page="about"><span class="nav-icon">ⓘ</span> About</button>
+ <div class="sidebar-bottom"><strong>KINGS Student Smart Portal</strong><br>Learn · Connect · Grow</div>
+</aside>
+<div class="overlay" id="overlay"></div>
+<main class="main">
+<header class="topbar">
+ <div class="top-left"><button class="menu-btn" id="menuBtn">☰</button><div class="breadcrumb">KINGS / <strong id="currentPage">Dashboard</strong></div></div>
+ <div class="top-profile"><div class="avatar" id="topAvatar">S</div><span class="user-name" id="topName">Student</span></div>
+</header>
+<div class="content">
+
+<section class="page active" id="page-home">
+ <div class="hero"><div class="hero-content">
+ <div class="eyebrow">WELCOME TO KINGS COLLEGE OF ENGINEERING</div>
+ <h1 class="hero-title">KCE Campus Portal</h1>
+<p class="hero-subtitle" style="color:#F5C451;opacity:1;font-weight:700;">Your Campus. Your Future.</p>
+ <p>One smart place for campus information, library resources, transport details and your student assistant.</p>
+ <div class="hero-actions"><button class="btn btn-gold" data-go="chat">Meet TETRON ✦</button><button class="btn btn-outline" data-go="library">Explore Library →</button></div>
+ </div></div>
+ <div class="section-heading"><div><h2>Your Student Services</h2><p>Quick access to your campus workspace.</p></div><span class="status">● Portal Ready</span></div>
+ <div class="cards">
+ <article class="card"><div class="card-icon"><img src="public/tetron-logo.png.png" alt="TETRON Logo"></div><div class="card-body"><h3>TETRON KCE Assistant</h3><p>Your campus help assistant</p></div><button data-go="chat" aria-label="Open assistant">›</button></article>
+ <article class="card"><div class="card-icon"><img src="public/kce-library-logo.png.png" alt="Library Logo"></div><div class="card-body"><h3>Library</h3><p>Explore books and resources</p></div><button data-go="library" aria-label="Open library">›</button></article>
+ <article class="card"><div class="card-icon">🚌</div><div class="card-body"><h3>Transport</h3><p>Routes and travel information</p></div><button data-go="transport" aria-label="Open transport">›</button></article>
+ </div>
+ <div class="panel"><h2>A smarter campus experience</h2><p>This is a frontend. Official college records, library systems and live transport information are yet.</p></div>
+</section>
+
+<section class="page" id="page-dhi" data-page="dhi" hidden>
+ <div class="section-heading"><div><h2>🎓 DHI Student Dashboard</h2><p>Access your official KCE student portal securely.</p></div></div>
+ <div class="panel"><p>Sign in through the official DHI website to view your student dashboard.</p>
+ <a class="btn primary" href="https://auth.dhi-edu.com/auth/realms/ret/protocol/openid-connect/auth?client_id=ret_kce&redirect_uri=https%3A%2F%2Fret.dhi-edu.com%2Fret_kce%2F&response_type=code&scope=openid" target="_blank" rel="noopener noreferrer">Open DHI Student Login ↗</a>
+ </div></section>
+<section class="page" id="page-chat">
+ <div class="section-heading"><div><h2>✦ TETRON KCE Assistant</h2><p>Your student-help assistant interface.</p></div><span class="status">DEMO</span></div>
+ <div class="panel"><div class="chat-box"><div class="chat-messages" id="messages" aria-live="polite"><div class="message bot">Vanakkam! 👋 I'm TETRON KCE Assistant.\n\nAsk me about this portal, Library, Transport, Profile or Settings.\n\nI'm currently in Assistant.</div></div>
+ <form class="chat-form" id="chatForm"><input class="chat-input" id="chatInput" ="Type your message..." autocomplete="off" required><button type="submit">Send ➤</button></form></div>
+ <p class="note">Demo replies only. Real AI requires a secure backend and API key.</p></div>
+</section>
+
+<section class="page" id="page-library">
+ <div class="section-heading"><div><h2>📚 Library</h2><p>Digital library workspace.</p></div></div>
+ <div class="panel"><h2>Search sample books</h2><p>This sample catalogue is to the official college library server.</p>
+ <div class="form-field"><label for="bookSearch">Book title or subject</label><input id="bookSearch" ="Search Java, DBMS, Mathematics..."></div><div class="info-list" id="bookResults"></div></div>
+</section>
+
+
+
+
+<section class="page" id="page-transport">
+  <div class="section-heading">
+    <div>
+      <h2>🚌 Transport</h2>
+      <p>Select a vehicle to see its complete route.</p>
+    </div>
+  </div>
+
+  <div class="panel">
+    <input id="vehicleSearch" type="search"
+      placeholder="Search bus, Queens 9, Van-A or a stop..."
+      aria-label="Search vehicles or stops"
+      style="width:100%;box-sizing:border-box;padding:13px;border:1px solid #d5dbea;border-radius:12px;font:inherit;margin-bottom:14px">
+    <p id="vehicleStatus" role="status">Loading vehicles...</p>
+    <div id="vehicleCards"
+      style="display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:12px"></div>
+    <div id="vehicleRoute" style="margin-top:18px"></div>
+  </div>
+</section>
+
+
+
+
+<section class="page" id="page-profile">
+ <div class="section-heading"><div><h2>♙ Profile</h2><p>Customise your display name.</p></div></div>
+ <div class="panel"><h2>Student profile</h2><p>These details are saved in this browser on this device only.</p>
+ <form id="profileForm"><div class="form-field"><label for="studentName">Display name</label><input id="studentName" maxlength="60" ="Enter your name"></div>
+ <div class="form-field"><label for="studentDept">Department (optional)</label><input id="studentDept" maxlength="80" ="Enter your department"></div>
+ <button class="btn btn-gold" type="submit" style="margin-top:18px">Save Profile</button><p class="note" id="profileNotice"></p></form></div>
+</section>
+
+<section class="page" id="page-settings">
+ <div class="section-heading"><div><h2>⚙ Settings</h2><p>Portal preferences.</p></div></div>
+ <div class="panel"><h2>Personalise your portal</h2><div class="info-list">
+ <div class="info-row"><span>🎨</span><div><strong>Compact layout</strong><p>Switch between compact and standard card spacing.</p><button class="btn btn-gold" id="themeBtn" style="margin-top:10px">Toggle layout</button></div></div>
+ <div class="info-row"><span>💾</span><div><strong>Local profile data</strong><p>Clear locally saved profile details.</p><button class="btn btn-gold" id="clearBtn" style="margin-top:10px">Clear profile data</button></div></div>
+ </div><p class="note" id="settingsNotice"></p></div>
+</section>
+
+<section class="page" id="page-about">
+ <div class="section-heading"><div><h2>ⓘ About</h2><p>One place for a smarter student experience.</p></div></div>
+ <div class="panel"><h2>KINGS Student Smart Portal</h2><p>A mobile-friendly student portal designed to bring campus services together in one simple interface.</p>
+ <div class="info-list"><div class="info-row"><span>✦</span><div><strong>TETRON KCE Assistant</strong><p>Chat interface prepared for future AI integration.</p></div></div><div class="info-row"><span>📚</span><div><strong>Student services</strong><p>Library, transport and profile sections are frontend prototypes.</p></div></div><div class="info-row"><span>🔐</span><div><strong>Privacy</strong><p>Do not enter passwords or sensitive personal information. Official student authentication is not implemented.</p></div></div></div></div>
+</section>
+
+<footer class="footer">KINGS Student Smart Portal · Student </footer>
+</div>
+</main>
+</div>
+
+<script>
+const names={home:"Dashboard",chat:"TETRON Assistant",library:"Library",transport:"Transport",dhi:"DHI Dashboard",profile:"Profile",settings:"Settings",about:"About"};
+function showPage(name){
+ if(!names[name])return;
+ document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id==="page-"+name));
+ document.querySelectorAll(".nav-item").forEach(b=>b.classList.toggle("active",b.dataset.page===name));
+ document.getElementById("currentPage").textContent=names[name];
+ document.getElementById("sidebar").classList.remove("open");
+ document.getElementById("overlay").classList.remove("show");
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+document.querySelectorAll("[data-page]").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.page)));
+document.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>showPage(b.dataset.go)));
+const sidebar=document.getElementById("sidebar"),overlay=document.getElementById("overlay");
+document.getElementById("menuBtn").addEventListener("click",()=>{sidebar.classList.toggle("open");overlay.classList.toggle("show")});
+overlay.addEventListener("click",()=>{sidebar.classList.remove("open");overlay.classList.remove("show")});
+
+function get(key,fallback=""){try{return localStorage.getItem(key)??fallback}catch{return fallback}}
+function set(key,value){try{localStorage.setItem(key,value)}catch{}}
+function updateProfile(){
+ const name=get("kingsStudentName","Student");
+ document.getElementById("topName").textContent=name||"Student";
+ document.getElementById("topAvatar").textContent=(name.trim()[0]||"S").toUpperCase();
+ document.getElementById("studentName").value=get("kingsStudentName");
+ document.getElementById("studentDept").value=get("kingsStudentDept");
+}
+updateProfile();
+document.getElementById("profileForm").addEventListener("submit",e=>{
+ e.preventDefault();set("kingsStudentName",document.getElementById("studentName").value.trim());
+ set("kingsStudentDept",document.getElementById("studentDept").value.trim());
+ updateProfile();document.getElementById("profileNotice").textContent="Profile saved on this device.";
+});
+document.getElementById("clearBtn").addEventListener("click",()=>{
+ try{localStorage.removeItem("kingsStudentName");localStorage.removeItem("kingsStudentDept")}catch{}
+ updateProfile();document.getElementById("settingsNotice").textContent="Saved profile data cleared.";
+});
+let compact=false;
+document.getElementById("themeBtn").addEventListener("click",()=>{
+ compact=!compact;document.querySelectorAll(".card").forEach(c=>c.style.padding=compact?"10px":"");
+ document.getElementById("settingsNotice").textContent=compact?"Compact layout enabled.":"Standard layout restored.";
+});
+const books=[
+ ["Java Programming","Programming"],["Database Management Systems","Computer Science"],
+ ["Data Structures and Algorithms","Computer Science"],["Engineering Mathematics","Mathematics"],
+ ["Computer Networks","Computer Science"],["Operating Systems","Computer Science"]
+];
+function renderBooks(q=""){
+ const target=document.getElementById("bookResults");target.replaceChildren();
+ const list=books.filter(b=>b.join(" ").toLowerCase().includes(q.toLowerCase()));
+ if(!list.length){const p=document.createElement("p");p.className="note";p.textContent="No matching sample books.";target.appendChild(p);return}
+ list.forEach(b=>{const row=document.createElement("div");row.className="info-row";
+ const icon=document.createElement("span");icon.textContent="📖";const info=document.createElement("div");
+ const title=document.createElement("strong");title.textContent=b[0];const desc=document.createElement("p");desc.textContent="Subject: "+b[1]+" · Sample listing";
+ info.append(title,desc);row.append(icon,info);target.appendChild(row)});
+}
+renderBooks();document.getElementById("bookSearch").addEventListener("input",e=>renderBooks(e.target.value.trim()));
+function addMessage(text,type){
+ const box=document.getElementById("messages"),bubble=document.createElement("div");
+ bubble.className="message "+type;bubble.textContent=text;box.appendChild(bubble);box.scrollTop=box.scrollHeight;
+}
+function reply(q){
+ q=q.toLowerCase();
+ if(q.includes("library")||q.includes("book"))return "Open the Library section to search the sample book catalogue. The official library system is yet.";
+ if(q.includes("bus")||q.includes("transport"))return "The Transport section is ready for verified college bus routes and timings. Official data has not been added yet.";
+ if(q.includes("profile"))return "Open Profile to save a display name and department locally on this device.";
+ if(q.includes("setting"))return "Open Settings to toggle compact layout or clear locally saved profile details.";
+ if(q.includes("hello")||q.includes("hi")||q.includes("vanakkam"))return "Vanakkam! 👋 I'm TETRON KCE Assistant. Ask about Library, Transport, Profile or Settings.";
+ return "I'm currently in Assistant. I can guide you around Library, Transport, Profile and Settings. Real AI answers need a secure backend.";
+}
+document.getElementById("chatForm").addEventListener("submit",e=>{
+ e.preventDefault();const input=document.getElementById("chatInput"),q=input.value.trim();if(!q)return;
+ addMessage(q,"user");input.value="";setTimeout(()=>addMessage(reply(q),"bot"),250);
+});
+</script>
+
+<script id="transport-database-script">
+(() => {
+  const input = document.getElementById('transportSearch');
+  const button = document.getElementById('transportSearchBtn');
+  const status = document.getElementById('transportStatus');
+  const results = document.getElementById('transportResults');
+  if (!input || !button || !status || !results) return;
+
+  const safe = value => String(value ?? '').replace(/[&<>"']/g, c => ({
+    '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+  }[c]));
+
+  async function searchBuses() {
+    const query = input.value.trim();
+    status.textContent = 'Searching transport database...';
+    results.replaceChildren();
+
+    try {
+      const response = await fetch('/api/buses?search=' + encodeURIComponent(query));
+      if (!response.ok) throw new Error('HTTP ' + response.status);
+      const data = await response.json();
+      if (!data.success) throw new Error('Could not read transport data.');
+
+      if (!data.buses.length) {
+        status.textContent = query
+          ? 'No matching bus routes found. Check the spelling or add verified route data to the database.'
+          : 'No bus routes have been added yet. Verified college route details are needed.';
+        return;
+      }
+
+      status.textContent = data.buses.length + ' bus route(s) found.';
+      results.innerHTML = data.buses.map(bus => `
+        <article class="panel" style="margin-top:14px;border-radius:14px">
+          <h3>🚌 Bus ${safe(bus.bus_number)}</h3>
+          <p><strong>Starting time:</strong> ${safe(bus.starting_time || 'Not provided')}</p>
+          <h4>Route stops</h4>
+          ${bus.stops.length ? `
+            <ol style="padding-left:24px">
+              ${bus.stops.map(stop => `
+                <li style="padding:7px 0">
+                  <strong>${safe(stop.name)}</strong>
+                  ${stop.time ? ' — ' + safe(stop.time) : ''}
+                </li>
+              `).join('')}
+            </ol>` : '<p>Stops have not been added yet.</p>'}
+        </article>
+      `).join('');
+    } catch (error) {
+      status.textContent = 'Cannot connect to the transport backend. Start it using: python server.py';
+    }
+  }
+
+  button.addEventListener('click', searchBuses);
+  input.addEventListener('keydown', event => {
+    if (event.key === 'Enter') searchBuses();
+  });
+})();
+</script>
+
+
+<script id="transport-db-integration">
+(() => {
+  const input = document.getElementById('transportSearch');
+  const status = document.getElementById('transportStatus');
+  const results = document.getElementById('transportResults');
+  if (!input || !status || !results) return;
+
+  let buses = [];
+
+  const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({
+    '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+  }[c]));
+
+  function render() {
+    const q = input.value.trim().toLowerCase();
+    const found = buses.filter(b =>
+      String(b.bus_number).toLowerCase().includes(q) ||
+      String(b.starting_place).toLowerCase().includes(q)
+    );
+
+    status.textContent = found.length
+      ? `${found.length} bus(es) found`
+      : 'No matching buses found.';
+
+    results.innerHTML = found.map(b => `
+      <article class="panel" style="margin-top:14px;border-radius:14px">
+        <h3>🚌 Bus ${esc(b.bus_number)}</h3>
+        <p>📍 <strong>Starting place:</strong> ${esc(b.starting_place)}</p>
+        <p>🕒 <strong>Starting time:</strong> ${esc(b.starting_time || 'Not provided')}</p>
+        <p style="font-size:13px;opacity:.8">Full route stops will be added when verified.</p>
+      </article>
+    `).join('');
+  }
+
+  async function loadBuses() {
+    status.textContent = 'Loading bus details from database...';
+    try {
+      const response = await fetch('/api/transport-buses');
+      if (!response.ok) throw new Error('API unavailable');
+      const data = await response.json();
+      if (!data.success) throw new Error('Database response invalid');
+      buses = data.buses;
+      render();
+    } catch (e) {
+      status.textContent = 'Cannot load buses. Please ensure the updated server is running.';
+    }
+  }
+
+  input.addEventListener('input', render);
+  loadBuses();
+})();
+</script>
+
+
+<script id="vehicle-route-browser">
+(() => {
+  const search = document.getElementById('vehicleSearch');
+  const status = document.getElementById('vehicleStatus');
+  const cards = document.getElementById('vehicleCards');
+  const route = document.getElementById('vehicleRoute');
+  if (!search || !status || !cards || !route) return;
+
+  let vehicles = [];
+  let selected = null;
+
+  const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({
+    '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+  }[c]));
+
+  function render() {
+    const q = search.value.trim().toLowerCase();
+    const filtered = vehicles.filter(v =>
+      v.label.toLowerCase().includes(q) ||
+      v.stops.some(s => s.stop_name.toLowerCase().includes(q))
+    );
+
+    status.textContent = `${filtered.length} vehicle(s)`;
+    cards.innerHTML = filtered.map(v => `
+      <button type="button" data-vehicle-id="${v.id}"
+        style="text-align:left;padding:16px;border-radius:14px;border:1px solid #d5dbea;cursor:pointer;background:var(--card-bg,white);color:inherit;font:inherit">
+        <strong>🚌 ${esc(v.label)}</strong>
+        <div style="margin-top:8px;font-size:13px">🕒 ${esc(v.starting_time)}</div>
+        <div style="margin-top:5px;font-size:12px">${v.stops.length} stops</div>
+      </button>
+    `).join('');
+
+    if (selected && !filtered.some(v => v.id === selected.id)) {
+      selected = null;
+      route.innerHTML = '';
+    }
+  }
+
+  function openRoute(v) {
+    selected = v;
+    route.innerHTML = `
+      <article class="panel" style="border-radius:14px">
+        <h2>🚌 ${esc(v.label)} — Full Route</h2>
+        <p><strong>Starting time:</strong> ${esc(v.starting_time)}</p>
+        <p><strong>Total stops:</strong> ${v.stops.length}</p>
+        <ol style="padding-left:24px">
+          ${v.stops.map(s => `
+            <li style="padding:8px 0">
+              <strong>${esc(s.stop_name)}</strong>
+              <span style="opacity:.8"> — Count: ${s.stop_count == null ? 'Not available' : esc(s.stop_count)}</span>
+            </li>
+          `).join('')}
+        </ol>
+      </article>
+    `;
+    route.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+
+  cards.addEventListener('click', e => {
+    const button = e.target.closest('[data-vehicle-id]');
+    if (!button) return;
+    const v = vehicles.find(item => String(item.id) === button.dataset.vehicleId);
+    if (v) openRoute(v);
+  });
+
+  search.addEventListener('input', render);
+
+  fetch('/api/vehicles')
+    .then(r => {
+      if (!r.ok) throw new Error('API error');
+      return r.json();
+    })
+    .then(data => {
+      if (!data.success) throw new Error('Invalid response');
+      vehicles = data.vehicles.map(v => ({
+        ...v,
+        label: v.vehicle_label || v.label,
+        stops: (v.stops || []).map(s => ({
+          ...s,
+          stop_name: s.stop_name || s.name
+        }))
+      }));
+      render();
+      status.textContent = `${vehicles.length} vehicles loaded. Select a card to view its route.`;
+    })
+    .catch(() => {
+      status.textContent = 'Unable to load routes. Restart the Python server and refresh this page.';
+    });
+})();
+</script>
+
+
+<div id="kceAuthScreen">
+  <form id="kceAuthCard">
+    <h2>KCE Campus Portal</h2>
+    <p class="sub">Sign in to your student or administration account</p>
+    <label for="kceRole">Account type</label>
+    <select id="kceRole">
+      <option value="student">Student</option>
+      <option value="principal">Principal</option>
+      <option value="secretary">Secretary</option>
+      <option value="admin">Administrator</option>
+    </select>
+    <label for="kceUsername">Username / Student ID</label>
+    <input id="kceUsername" autocomplete="username" required maxlength="150">
+    <label for="kcePassword">Password</label>
+    <input id="kcePassword" type="password" autocomplete="current-password" required maxlength="256">
+    <button type="submit">Secure Login</button>
+    <div id="kceAuthMessage" role="status"></div>
+  </form>
+</div>
+<div id="kceAdminPanel" hidden>
+  <button id="kceManageStudents" type="button">Student Accounts</button>
+  <button id="kceLogout" type="button">Logout</button>
+</div>
+<div id="kceStudentPanel">
+  <div class="inner">
+    <h2>Student Account Management</h2>
+    <p>Only authenticated administration accounts can create student logins.</p>
+    <form id="kceCreateStudent">
+      <label>Student ID / Username</label>
+      <input id="kceNewStudent" required maxlength="150" autocomplete="off">
+      <label>Initial password (at least 8 characters)</label>
+      <input id="kceNewPassword" type="password" required minlength="8" maxlength="256" autocomplete="new-password">
+      <button type="submit">Create Student Account</button>
+      <button id="kceCloseStudents" type="button">Close</button>
+    </form>
+    <p id="kceStudentMessage" role="status"></p>
+    <h3>Existing student accounts</h3>
+    <div id="kceStudentList">Loading…</div>
+  </div>
+</div>
+<script id="KCE_AUTH_SCRIPT_V1">
+(() => {
+  const $ = id => document.getElementById(id);
+  async function api(url, options={}) {
+    const r = await fetch(url, {
+      credentials: "same-origin",
+      headers: {"Content-Type":"application/json", ...(options.headers||{})},
+      ...options
+    });
+    let data;
+    try { data = await r.json(); } catch { data = {}; }
+    if (!r.ok) throw new Error(data.error || "Request failed ("+r.status+")");
+    return data;
+  }
+  function showPortal(user) {
+    document.body.classList.add("portal-authenticated");
+    $("kceAuthScreen").style.display = "none";
+    const panel = $("kceAdminPanel");
+    panel.hidden = false;
+    $("kceManageStudents").style.display =
+      ["principal","secretary","admin"].includes(user.role) ? "" : "none";
+    let badge = document.getElementById("kceUserBadge");
+    if (!badge) {
+      badge = document.createElement("span");
+      badge.id = "kceUserBadge";
+      badge.style.cssText = "margin-right:8px;font-size:12px;color:#10264a";
+      panel.prepend(badge);
+    }
+    badge.textContent = user.username + " · " + user.role;
+  }
+  $("kceAuthCard").addEventListener("submit", async e => {
+    e.preventDefault();
+    const button = $("kceAuthCard").querySelector('button[type="submit"]');
+    const message = $("kceAuthMessage");
+    button.disabled = true;
+    button.textContent = "Signing in…";
+    message.textContent = "";
+    try {
+      const user = await api("/api/login", {method:"POST",body:JSON.stringify({
+        username:$("kceUsername").value.trim(),
+        password:$("kcePassword").value
+      })});
+      if (!user || !user.success || !user.role) {
+        throw new Error("Login response incomplete. Please try again.");
+      }
+      if (user.role !== $("kceRole").value) {
+        try { await api("/api/logout", {method:"POST",body:"{}"}); } catch {}
+        throw new Error("Choose the correct account type for this username.");
+      }
+      $("kcePassword").value = "";
+      message.textContent = "Login successful. Opening portal…";
+      location.reload();
+    } catch(err) {
+      message.textContent = err.message || "Login failed. Please try again.";
+    } finally {
+      button.disabled = false;
+      button.textContent = "Secure Login";
+    }
+  });
+  $("kceLogout").addEventListener("click", () => {
+    // Show login immediately; revoke the server session in the background.
+    document.body.classList.remove("portal-authenticated");
+    $("kceAdminPanel").hidden = true;
+    $("kceAuthScreen").style.display = "flex";
+    $("kceStudentPanel").style.display = "none";
+    $("kcePassword").value = "";
+    $("kceAuthMessage").textContent = "";
+    $("kceUsername").value = "";
+    $("kceRole").value = "student";
+    fetch("/api/logout", {
+      method: "POST",
+      credentials: "same-origin",
+      headers: {"Content-Type":"application/json"},
+      body: "{}"
+    }).catch(() => {});
+  });
+  $("kceManageStudents").addEventListener("click", async () => {
+    $("kceStudentPanel").style.display = "block";
+    $("kceStudentMessage").textContent = "";
+    await loadStudents();
+  });
+  $("kceCloseStudents").addEventListener("click", () => {
+    $("kceStudentPanel").style.display = "none";
+  });
+  async function loadStudents() {
+    try {
+      const result = await api("/api/students");
+      const list = $("kceStudentList");
+      list.replaceChildren();
+      if (!result.students.length) { list.textContent = "No student accounts yet."; return; }
+      result.students.forEach(student => {
+        const row = document.createElement("div");
+        row.style.cssText = "padding:10px;border-bottom:1px solid #ddd";
+        row.textContent = student.username + " · " + (student.active ? "Active" : "Inactive");
+        list.appendChild(row);
+      });
+    } catch(err) { $("kceStudentList").textContent = err.message; }
+  }
+  $("kceCreateStudent").addEventListener("submit", async e => {
+    e.preventDefault();
+    $("kceStudentMessage").textContent = "Creating account…";
+    try {
+      await api("/api/students",{method:"POST",body:JSON.stringify({
+        username:$("kceNewStudent").value.trim(),
+        password:$("kceNewPassword").value
+      })});
+      $("kceStudentMessage").textContent = "Student account created successfully.";
+      $("kceCreateStudent").reset();
+      await loadStudents();
+    } catch(err) { $("kceStudentMessage").textContent = err.message; }
+  });
+  api("/api/me").then(user => showPortal(user)).catch(() => {
+    document.body.classList.remove("portal-authenticated");
+    $("kceAuthScreen").style.display = "flex";
+  });
+})();
+</script>
+
+</body>
+</html>
