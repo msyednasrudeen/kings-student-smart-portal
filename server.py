@@ -379,8 +379,8 @@ class PortalHandler(SimpleHTTPRequestHandler):
         print("%s - %s" % (self.address_string(), fmt % args))
 
 if __name__ == "__main__":
+    host = "0.0.0.0"
+    port = int(os.environ.get("PORT", "8080"))
     print("KINGS Student Smart Portal backend")
-    print("Open: http://127.0.0.1:8080/index.html")
-    print("API:   http://127.0.0.1:8080/api/health")
-    print("Stop with Ctrl+C")
-    ThreadingHTTPServer(("127.0.0.1", 8080), PortalHandler).serve_forever()
+    print(f"Listening on {host}:{port}")
+    ThreadingHTTPServer((host, port), PortalHandler).serve_forever()
